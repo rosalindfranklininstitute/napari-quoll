@@ -21,17 +21,19 @@ from napari.utils.notifications import show_info
 from quoll.frc import oneimg
 from quoll.io import reader as quollreader
 
+from pathlib import Path
+
 
 @magic_factory
 def quoll_oneimgfrc(
-    filename: str,
+    filename: Path,
     pixel_size: float,
     unit: Optional[str] = "nm",
     tile_size: Optional[int] = 256,
 ):
     # Load image
     QuollImg = quollreader.Image(
-        filename,
+        str(filename),
         pixel_size,
         unit,
     )
