@@ -22,14 +22,17 @@ from quoll.frc import oneimg
 from quoll.io import reader as quollreader
 
 from pathlib import Path
+from qtpy.QtWidgets import QPushButton, QFileDialog
 
 
-@magic_factory
+@magic_factory(results_csv={"mode": "w"})
 def quoll_oneimgfrc(
     filename: Path,
     pixel_size: float,
-    unit: Optional[str] = "nm",
-    tile_size: Optional[int] = 256,
+    unit: str = "nm",
+    tile_size: int = 256,
+    save_csv: bool = True,
+    results_csv: Path = Path("results.csv")
 ):
     # Load image
     QuollImg = quollreader.Image(
@@ -67,7 +70,9 @@ def quoll_oneimgfrc(
         name="Resolution", 
         area="right"
     )
-
+    if save_csv is True:
+        results_df.to_csv(results_csv)
+    
     # Display histogram of results
     fig = plt.figure()
     results_df.Resolution.hist()
