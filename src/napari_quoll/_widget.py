@@ -8,21 +8,17 @@ Replace code below according to your needs.
 """
 import os
 import tempfile
-from typing import Optional
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import napari
 import numpy as np
-import pandas as pd
 from magicgui import magic_factory
 from magicgui.widgets import Table
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 from napari.utils.notifications import show_info
 from quoll.frc import oneimg
 from quoll.io import reader as quollreader
-
-from pathlib import Path
-from qtpy.QtWidgets import QPushButton, QFileDialog
 
 
 @magic_factory(results_csv={"mode": "w"})
@@ -32,7 +28,7 @@ def quoll_oneimgfrc(
     unit: str = "nm",
     tile_size: int = 256,
     save_csv: bool = True,
-    results_csv: Path = Path("results.csv")
+    results_csv: Path = Path("results.csv"),
 ):
     # Load image
     QuollImg = quollreader.Image(
@@ -47,8 +43,8 @@ def quoll_oneimgfrc(
     viewer = napari.current_viewer()
     viewer.add_image(
         QuollImg.img_data,
-        scale=(1/pixel_size, 1/pixel_size),
-        )
+        scale=(1 / pixel_size, 1 / pixel_size),
+    )
     viewer.scale_bar.visible = True
     viewer.scale_bar.unit = unit
 
@@ -57,20 +53,14 @@ def quoll_oneimgfrc(
 
     # Calculate resolution of tiles
     results_df = oneimg.calc_local_frc(
-        QuollImg,
-        tile_size=tile_size,
-        tiles_dir=tempdir.name
+        QuollImg, tile_size=tile_size, tiles_dir=tempdir.name
     )
 
     show_info(f"Mean resolution is {np.mean(results_df.Resolution)} {unit}")
 
     # Display resolution results
     table = Table(value=results_df.describe().to_dict())
-    viewer.window.add_dock_widget(
-        table,
-        name="Resolution",
-        area="right"
-    )
+    viewer.window.add_dock_widget(table, name="Resolution", area="right")
     if save_csv is True:
         results_df.to_csv(results_csv)
 
@@ -80,9 +70,7 @@ def quoll_oneimgfrc(
     plt.xlabel(f"Resolution ({unit})")
     plt.ylabel("Number of tiles")
     viewer.window.add_dock_widget(
-        FigureCanvas(fig),
-        name="Histogram of resolution",
-        area="right"
+        FigureCanvas(fig), name="Histogram of resolution", area="right"
     )
 
     # Display heatmap of resolutions as layer
@@ -94,7 +82,7 @@ def quoll_oneimgfrc(
         resolution_heatmap,
         colormap="viridis",
         opacity=0.3,
-        scale=(1/pixel_size, 1/pixel_size),
+        scale=(1 / pixel_size, 1 / pixel_size),
     )
 
     # Remove tiles directory
