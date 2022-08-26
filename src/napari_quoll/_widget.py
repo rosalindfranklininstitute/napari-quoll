@@ -40,7 +40,7 @@ def quoll_oneimgfrc(
         pixel_size,
         unit,
     )
-    
+
     show_info(f"Working with image: {os.path.basename(filename)}")
 
     # Display image
@@ -61,26 +61,27 @@ def quoll_oneimgfrc(
         tile_size=tile_size,
         tiles_dir=tempdir.name
     )
+
     show_info(f"Mean resolution is {np.mean(results_df.Resolution)} {unit}")
 
     # Display resolution results
     table = Table(value=results_df.describe().to_dict())
     viewer.window.add_dock_widget(
-        table, 
-        name="Resolution", 
+        table,
+        name="Resolution",
         area="right"
     )
     if save_csv is True:
         results_df.to_csv(results_csv)
-    
+
     # Display histogram of results
     fig = plt.figure()
     results_df.Resolution.hist()
     plt.xlabel(f"Resolution ({unit})")
     plt.ylabel("Number of tiles")
     viewer.window.add_dock_widget(
-        FigureCanvas(fig), 
-        name="Histogram of resolution", 
+        FigureCanvas(fig),
+        name="Histogram of resolution",
         area="right"
     )
 
@@ -90,11 +91,11 @@ def quoll_oneimgfrc(
         results_df,
     )
     viewer.add_image(
-        resolution_heatmap, 
-        colormap="viridis", 
+        resolution_heatmap,
+        colormap="viridis",
         opacity=0.3,
         scale=(1/pixel_size, 1/pixel_size),
-        )
+    )
 
     # Remove tiles directory
     tempdir.cleanup()
