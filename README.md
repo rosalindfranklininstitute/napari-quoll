@@ -25,9 +25,9 @@ https://napari.org/stable/plugins/index.html
 
 ## Installation
 
-You can install `napari-quoll` via [pip] into a <b>Python 3.7</b> environment, replacing <env_name> with an environment name of your choice:
+You can install `napari-quoll` via [pip], replacing <env_name> with an environment name of your choice:
 
-    conda -n create <env_name> python=3.7
+    conda -n create <env_name> pip
     conda activate <env_name>
     pip install napari-quoll
 
@@ -36,8 +36,6 @@ You can install `napari-quoll` via [pip] into a <b>Python 3.7</b> environment, r
 To install latest development version :
 
     pip install git+https://github.com/rosalindfranklininstitute/napari-quoll.git
-
-<b>Note:</b> Due to [miplib]() dependencies, this plugin only works on Python 3.7 environments.
 
 
 ## Contributing
