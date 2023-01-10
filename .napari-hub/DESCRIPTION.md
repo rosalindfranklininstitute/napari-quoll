@@ -26,10 +26,10 @@ Anyone who might want to measure spatial variations in image resolution. See [Qu
 
 ## Installation
 
-In a terminal, create a new conda environment with Python 3.7 and install the latest version of `napari-quoll`. 
+In a terminal, create a new conda environment and install the latest version of `napari-quoll`. 
 
 ```
-conda create -n napari-quoll python=3.7
+conda create -n napari-quoll pip
 conda activate napari-quoll
 pip install git+https://github.com/rosalindfranklininstitute/napari-quoll.git
 ```
@@ -47,7 +47,7 @@ Napari-quoll should be under the plugins menu at the top.
 
 The menu should pop up on the right. 
 
-1. Choose the filename for the image you would like to try this with (a test image is included [here](https://github.com/rosalindfranklininstitute/napari-quoll/tree/main/test_data)). 
+1. Open the image you would like to try this with and choose it from the dropdown menu (a test image is included [here](https://github.com/rosalindfranklininstitute/napari-quoll/tree/main/test_data)). 
 2. Specify the pixel size in physical units. The test image pixel size is 3 nm.
 3. Specify the tile-size in pixel units (how fine the resolution map should be)
 4. Specify if you would like to save the results as .csv and the filepath for this.

@@ -6,7 +6,6 @@ see: https://napari.org/stable/plugins/guides.html?#widgets
 
 Replace code below according to your needs.
 """
-import os
 import tempfile
 from pathlib import Path
 
@@ -21,9 +20,11 @@ from quoll.frc import oneimg
 from quoll.io import reader as quollreader
 
 
-@magic_factory(results_csv={"mode": "w"})
+@magic_factory(
+    pixel_size={"min": 1e-6}, tile_size={"min": 128}, results_csv={"mode": "w"}
+)
 def quoll_oneimgfrc(
-    filename: Path,
+    data: napari.types.ImageData,
     pixel_size: float,
     unit: str = "nm",
     tile_size: int = 256,
@@ -32,19 +33,14 @@ def quoll_oneimgfrc(
 ):
     # Load image
     QuollImg = quollreader.Image(
-        str(filename),
-        pixel_size,
-        unit,
+        img_data=data,
+        pixel_size=pixel_size,
+        unit=unit,
     )
-
-    show_info(f"Working with image: {os.path.basename(filename)}")
 
     # Display image
     viewer = napari.current_viewer()
-    viewer.add_image(
-        QuollImg.img_data,
-        scale=(1 / pixel_size, 1 / pixel_size),
-    )
+    viewer.layers.selection.scale = [1 / pixel_size, 1 / pixel_size]
     viewer.scale_bar.visible = True
     viewer.scale_bar.unit = unit
 
@@ -82,7 +78,7 @@ def quoll_oneimgfrc(
         resolution_heatmap,
         colormap="viridis",
         opacity=0.3,
-        scale=(1 / pixel_size, 1 / pixel_size),
+        # scale=(1 / pixel_size, 1 / pixel_size),
     )
 
     # Remove tiles directory
