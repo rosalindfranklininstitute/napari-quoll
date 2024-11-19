@@ -21,13 +21,13 @@ from quoll.io import reader as quollreader
 
 
 @magic_factory(
-    pixel_size={"min": 1e-6}, tile_size={"min": 128}, results_csv={"mode": "w"}
+    pixel_size={"min": 1e-6}, tile_size={"min": 128.0}, results_csv={"mode": "w"}
 )
 def quoll_oneimgfrc(
     data: napari.types.ImageData,
     pixel_size: float,
     unit: str = "nm",
-    tile_size: int = 256,
+    tile_size: float = 256.0,  # temp fix as can't type in the GUI if it's a float
     save_csv: bool = True,
     results_csv: Path = Path("results.csv"),
 ):
@@ -49,7 +49,7 @@ def quoll_oneimgfrc(
 
     # Calculate resolution of tiles
     results_df = oneimg.calc_local_frc(
-        QuollImg, tile_size=tile_size, tiles_dir=tempdir.name
+        QuollImg, tile_size=int(tile_size), tiles_dir=tempdir.name
     )
 
     show_info(f"Mean resolution is {np.mean(results_df.Resolution)} {unit}")
